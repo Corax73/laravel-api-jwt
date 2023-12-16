@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,13 @@ Route::middleware(['api'])->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/register', [AuthController::class, 'register']);
+});
+
+Route::controller(NewsController::class)->group(function () {
+    Route::get('/news', 'index')->name('index');
+    Route::get('/news/{news}', 'show')->name('show');
+});
+
+Route::middleware(['auth:api'])->controller(NewsController::class)->group(function () {
+    Route::post('news', 'store')->name('store');
 });
