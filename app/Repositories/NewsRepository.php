@@ -32,7 +32,30 @@ class NewsRepository
      */
     public static function createNews(array $validatedData): bool
     {
-        $page = new News($validatedData);
-        return $page->saveOrFail();
+        $news = new News($validatedData);
+        return $news->saveOrFail();
+    }
+
+    /**
+     * Updates the news.
+     * @param int $id
+     * @param array $validatedData
+     * @return bool
+     */
+    public static function updateNews(int $id, array $validatedData): bool
+    {
+        $news = News::findOrFail($id);
+        return $news->update($validatedData);
+    }
+
+    /**
+     * Deletes news.
+     * @param int $id
+     * @return bool
+     */
+    public static function deleteNews(int $id): bool
+    {
+        $news = News::findOrFail($id);
+        return (bool)($news->delete());
     }
 }

@@ -27,5 +27,7 @@ Route::controller(NewsController::class)->group(function () {
 });
 
 Route::middleware(['auth:api'])->controller(NewsController::class)->group(function () {
-    Route::post('news', 'store')->name('store');
+    Route::post('/news', 'store')->name('store');
+    Route::patch('/news/{news}', 'update')->name('update');
+    Route::delete('/news/{news}', 'destroy')->name('destroy');
 });
