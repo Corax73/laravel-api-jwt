@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\NewsCreateRequest;
 use App\Http\Requests\NewsDestroyRequest;
 use App\Http\Requests\NewsUpdateRequest;
+use App\Http\Requests\SearchRequest;
 use App\Models\News;
 use App\Repositories\NewsRepository;
 use Illuminate\Http\Request;
@@ -62,10 +63,22 @@ class NewsController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $id, NewsDestroyRequest $request): \Illuminate\Http\Response
+    public function destroy(int $id): \Illuminate\Http\Response
     {
         $resp = NewsRepository::deleteNews($id) ?
             ['message' => 'News deleted.'] : ['message' => 'Try again.'];
+        return response($resp);
+    }
+
+    /**
+     * Requests a method to search the repository using data from the request.
+     * @param App\Http\Requests\SearchRequest
+     * @return \Illuminate\Http\Response
+     */
+    public function search(SearchRequest $request): \Illuminate\Http\Response
+    {
+        $validatedData = $request->validated();
+        $resp = NewsRepository::searchByTitleOrText($validatedData);
         return response($resp);
     }
 }

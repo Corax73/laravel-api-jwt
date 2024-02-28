@@ -58,4 +58,26 @@ class NewsRepository
         $news = News::findOrFail($id);
         return (bool)($news->delete());
     }
+
+    /**
+     * Checks the keys in the argument and searches if present.
+     * @param array $validatedData
+     * @return array
+     */
+    public static function searchByTitleOrText(array $validatedData): array
+    {
+        if (isset($validatedData['title'])) {
+            $title = $validatedData['title'];
+        }
+        if (isset($validatedData['text'])) {
+            $text = $validatedData['text'];
+        }
+        if (isset($title)) {
+            $resp = News::where('title', 'like', '%' . $title . '%');
+        }
+        if (isset($text)) {
+            $resp = $resp->where('text', 'like', '%' . $text . '%');
+        }
+        return $resp->get()->toArray();
+    }
 }

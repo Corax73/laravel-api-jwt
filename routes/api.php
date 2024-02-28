@@ -24,6 +24,7 @@ Route::middleware(['api'])->group(function () {
 Route::controller(NewsController::class)->group(function () {
     Route::get('/news', 'index')->name('index');
     Route::get('/news/{news}', 'show')->name('show');
+    Route::post('/news/search/', 'search')->name('search');
 });
 
 Route::middleware(['auth:api'])->controller(NewsController::class)->group(function () {
