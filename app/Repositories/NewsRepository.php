@@ -3,16 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\News;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class NewsRepository
 {
     /**
      * Returns an array of all news.
-     * @return array
+     * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public static function getAllNews(): array
+    public static function getAllNews(): LengthAwarePaginator
     {
-        return News::orderBy('id', 'desc')->get()->toArray();
+        return News::orderBy('id', 'desc')->paginate();
     }
 
     /**
@@ -22,7 +23,12 @@ class NewsRepository
      */
     public static function getOneNews(int $id): array
     {
-        return News::findOrFail($id)->toArray();
+        $resp = ['error' => 'not found'];
+        $news = News::find($id);
+        if($news) {
+            $resp = $news->toArray();
+        }
+        return $resp;
     }
 
     /**
